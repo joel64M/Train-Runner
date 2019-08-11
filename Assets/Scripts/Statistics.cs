@@ -9,12 +9,9 @@ public class Statistics : MonoBehaviour
     public int rank;
     public float completion;
 
-  public  bool isPlayer;
 
 
-    Transform thisTransform;
-    float goalZ, startZ, divZ;
-
+    public bool isPlayer;
 
     GameManagerScript gms;
     PathFollower pf;
@@ -24,34 +21,26 @@ public class Statistics : MonoBehaviour
     AIScript ais;
     TextMesh tm;
 
+
+    TrainScript ts;
     void Start()
     {
 
         tm = GetComponentInChildren<TextMesh>();
         gms = GameManagerScript.instance;
         pf = GetComponent<PathFollower>();
-        if (isPlayer)
+        ts = GameObject.FindGameObjectWithTag("Train").GetComponent<TrainScript>();
+
+        if (GetComponent<BehaviourScript>().isPlayer)
         {
             isPlayer = true;
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollowScript>().SetCamera(this.transform);
-
-            UIManagerScript.instance.mainPlayerStats = this.GetComponent<Statistics>();
-            ps = GetComponent<PlayerScript>();
-            GetComponent<AIScript>().enabled = false;
         }
         else
         {
             isPlayer = false;
-            ais = GetComponent<AIScript>();
-            GetComponent<PlayerScript>().enabled = false;
         }
-        //  gms.stats.Add(this.GetComponent<Statistics>());
         gms.AddToStats(GetComponent<Statistics>());
         tm.text = playerName;
-        thisTransform = GetComponent<Transform>();
-        startZ = thisTransform.position.z;
-        goalZ = GameObject.FindGameObjectWithTag("Goal").GetComponent<Transform>().position.z;
-        divZ = goalZ - startZ;
 
 
     }
@@ -59,9 +48,9 @@ public class Statistics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gms.isGameStart)
+        if (gms.isPlayerGameStart)
         {
-            completion = Mathf.Round((pf.distanceTravelled/ pf.totalPathLength) *100);     // Mathf.Round(((thisTransform.position.z - startZ) / divZ)*100);
+            completion = Mathf.Round(((pf.distanceTravelled - ( ts.distanceTravelled - gms.raceStartLength))/gms.raceStartLength) *100);     // Mathf.Round(((thisTransform.position.z - startZ) / divZ)*100);
         }
     }
 }

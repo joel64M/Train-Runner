@@ -118,6 +118,28 @@ public class UIManagerScript : MonoBehaviour
         gameCompletePanelList[i-1].posText.text = i.ToString(); 
         gameCompletePanelList[i-1].playerNameTxt.text = s.playerName;
     }
+    public void ShowDeathUI()
+    {
+        FooterText.enabled = true;
+        raceCompletePanelParent.SetActive(true);
+       raceCompletePanelHolder.SetActive(false);
+
+    mainButton.enabled = true;
+        levelProgressGo.SetActive(false);
+
+        if (gms.isGameComplete)
+        {
+            GameComplete();
+        }
+        else if (gms.isGameOver)
+        {
+            GameOver();
+        }
+        else
+        {
+            Debug.Log("No condition defined");
+        }
+    }
     public void ShowUI()
     {
         FooterText.enabled = true;

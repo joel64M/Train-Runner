@@ -7,32 +7,48 @@ public class PlayerScript : MonoBehaviour
 {
     PathFollower pf;
     GameManagerScript gms;
-
+    BehaviourScript bs;
     float speed;
 
     private void Start()
     {
         UIManagerScript.instance.mainPlayerStats = GetComponent<Statistics>();
 
+        bs = GetComponent<BehaviourScript>();
         gms = GameManagerScript.instance;
         pf = GetComponent<PathFollower>();
         speed = gms.speed;
+
+
     }
 
+    public bool raceFinished;
 
     private void Update()
     {
-        if (gms.isGameStart)
+        if (!raceFinished)
         {
-            if (Input.GetMouseButton(0))
+            if (gms.isPlayerGameStart)
             {
-                pf.speed = 0;
-            }
-            if(Input.GetMouseButtonUp(0))
-            {
-                pf.speed = speed;
+                if (Input.GetMouseButton(0))
+                {
+                    pf.speed = gms.trainNormalSpeed;
+                    bs.characterAnim.SetBool("Sleep", true);
+                }
+                else
+                {
+                    pf.speed = speed;
+                    bs.characterAnim.SetBool("Sleep", false);
+
+                }
             }
         }
+        else
+        {
+            pf.speed = gms.trainNormalSpeed;
+
+        }
+
 
     }
 

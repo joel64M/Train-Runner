@@ -6,8 +6,13 @@ using System.Collections.Generic;
 public class GameManagerScript : MonoBehaviour
 {
     public static GameManagerScript instance;
-    public float speed=5f;
+   // public float speed=5f;
     public bool isGameStart=false, isGameComplete=false, isGameOver=false;
+    public float raceStartLength = 30f;
+    public float speed = 5f;
+    public float trainSpeed = 10;
+    public float trainNormalSpeed = 5;
+    public bool isPlayerGameStart = false;
     public bool DeletePlayerPrefs;
     public int level = 0;
 
@@ -107,19 +112,30 @@ public class GameManagerScript : MonoBehaviour
     }
     public void GameStart()
     {
-        isGameStart = true;
+       isGameStart = true;
         isGameOver = false;
         isGameComplete = false;
         InvokeRepeating("SortStats", 2, 0.1f);
+      //  Time.timeScale = 5;
     }
     public void GameOver()
     {
 
-        isGameStart = false;
+      //  isGameStart = false;
         isGameOver = true;
         isGameComplete = false;
+        Handheld.Vibrate();
 
 
+    }
+    public void Died()
+    {
+     //   isGameStart = false;
+        isGameOver = true;
+        isGameComplete = false;
+        print("Game Over");
+        UIManagerScript.instance.ShowDeathUI();
+        Handheld.Vibrate();
     }
     public void GameComplete()
     {
@@ -127,9 +143,10 @@ public class GameManagerScript : MonoBehaviour
         {
             return;
         }
+        Handheld.Vibrate();
 
         isGameComplete = true;
-        isGameStart = false;
+      //  isGameStart = false;
         isGameOver = false;
        
         if (SceneManager.GetActiveScene().name == "Level" + level.ToString())

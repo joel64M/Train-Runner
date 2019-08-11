@@ -28,7 +28,7 @@ namespace PathCreation.Examples
          
         }
 
-        void Update()
+        void FixedUpdate()
         {
            // if (gms.isGameStart)
             {

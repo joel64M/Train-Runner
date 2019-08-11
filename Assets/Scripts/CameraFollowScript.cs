@@ -17,6 +17,7 @@ public class CameraFollowScript : MonoBehaviour
     Vector3 rotatePoint;
     Vector3 velocity = Vector3.zero;
     Camera cam;
+    GameManagerScript gms;
     private void Awake()
     {
         instance = this;
@@ -24,6 +25,7 @@ public class CameraFollowScript : MonoBehaviour
     private void Start()
     {
         cam = GetComponent<Camera>();
+        gms = GameManagerScript.instance;
     
     }
     public void SetCamera(Transform t)
@@ -35,7 +37,7 @@ public class CameraFollowScript : MonoBehaviour
     }
     private void LateUpdate()
     {
-      
+      if(gms.isGameStart )
        Move();
     }
     private void Move()

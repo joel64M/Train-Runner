@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - LevelCreator
+  - Ground
+  - PathCreator
+  - GameManager
+  - Goal
+  - Death
+  - Train
   layers:
   - Default
   - TransparentFX
@@ -14,9 +21,9 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
-  - 
+  - Death
+  - IgnoreGoal
+  - Goal
   - 
   - 
   - 

@@ -7,56 +7,83 @@ public class BehaviourScript : MonoBehaviour
     GameManagerScript gms;
     PathFollower pf;
     TrailRenderer tr;
-    ParticleSystem ps;
-    MeshRenderer mr;
+    ParticleSystem pss;
+    PlayerScript ps;
     bool stopTrigger;
 
     Vector3 initialPos;
 
-    float lastDistanceTravelled;
+    SkinnedMeshRenderer mr;
+    public bool isPlayer;
+    AIScript ais;
 
+    public Transform MeshParent;
+    public Transform PlayerMesh;
     [HideInInspector]
     public  float speed;
 
+
+    public Animator characterAnim;
+    public Animator jumpAnim;
+
     void Start()
     {
-         
 
-        tr = GetComponentInChildren<TrailRenderer>();
-        ps = GetComponentInChildren<ParticleSystem>();
-        mr = GetComponentInChildren<MeshRenderer>();
         pf = GetComponent<PathFollower>();
 
         gms = GameManagerScript.instance;
+        pss = GetComponentInChildren<ParticleSystem>();
+        mr = GetComponentInChildren<SkinnedMeshRenderer>();
+
+
+        if (Mathf.RoundToInt(MeshParent.position.x) == 0)
+        {
+            isPlayer = true;
+        }
+        else
+        {
+            isPlayer = false;
+        }
+
+        if (isPlayer)
+        {
+            isPlayer = true;
+           // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollowScript>().SetCamera(this.transform);
+            UIManagerScript.instance.mainPlayerStats = this.GetComponent<Statistics>();
+            ps = GetComponent<PlayerScript>();
+            GetComponent<AIScript>().enabled = false;
+            VCamScript.instance.AddToVCam(PlayerMesh);
+
+        }
+        else
+        {
+            isPlayer = false;
+            ais = GetComponent<AIScript>();
+            GetComponent<PlayerScript>().enabled = false;
+        }
+
 
         initialPos = transform.position;
         speed = gms.speed;
         pf.speed = 0;
     }
-    IEnumerator Respawn()
+    bool isStart;
+
+    private void Update()
     {
-
-        ps.Play();
-        pf.speed = 0;
-        mr.enabled = false;
-        tr.Clear();
-        tr.enabled = false;
-        yield return new WaitForSeconds(.5f);
-
-
-        mr.enabled = true;
-      // transform.position = initialPos;
-
-        pf.distanceTravelled = lastDistanceTravelled - 8f;
-        pf.speed = speed;
-        hit = false;
-        yield return new WaitForSeconds(.1f);
-
-        tr.Clear();
-        tr.enabled = true;
-
-
+        if (gms.isPlayerGameStart)
+        {
+            if (!isStart)
+            {
+                isStart = true;
+                jumpAnim.SetTrigger("JumpOnTrain");
+                characterAnim.SetTrigger("Jump");
+                VCamScript.instance.TurnOffFirstVCam();
+            }
+        }
     }
+
+
     bool hit = false;
     private void OnTriggerEnter(Collider other)
     {
@@ -68,24 +95,56 @@ public class BehaviourScript : MonoBehaviour
             stopTrigger = true;
             gms.CharacterReachedGoal(this.GetComponent<Statistics>());
 
-            if(this.GetComponent<PlayerScript>()!=null)
+            if (this.GetComponent<PlayerScript>() != null)
+            {
+                this.GetComponent<PlayerScript>().raceFinished = true;
+                characterAnim.SetTrigger("Idle");
+                GetComponent<AIScript>().enabled = true;
                 this.GetComponent<PlayerScript>().enabled = false;
 
+
+            }
+
             if (this.GetComponent<AIScript>() != null)
-                this.GetComponent<AIScript>().enabled = false;
+            {
+                this.GetComponent<AIScript>().raceFinished = true;
+                characterAnim.SetTrigger("Idle");
+            }
 
         }
 
-        if (other.gameObject.CompareTag("Death"))
+
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Death"))
         {
+
             if (hit)
             {
                 return;
             }
             hit = true;
-            lastDistanceTravelled = pf.distanceTravelled;
+            pss.Play();
+            pf.speed = 0;// gms.trainNormalSpeed;
+            if (isPlayer)
+            {
+                gms.Died();
+
+            }
             StartCoroutine(Respawn());
         }
+    }
 
+    IEnumerator Respawn()
+    {
+
+        pss.Play();
+        mr.enabled = false;
+        yield return new WaitForSeconds(0.7f);
+
+        gameObject.SetActive(false);
     }
 }
