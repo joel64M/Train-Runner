@@ -73,7 +73,7 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         // isGameStart = true;
-      LoadLevel();
+    //  LoadLevel();
     }
 
     void LoadLevel()
