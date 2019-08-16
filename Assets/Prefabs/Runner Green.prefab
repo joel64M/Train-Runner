@@ -7326,7 +7326,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f77fdbe17e9c614c9d868c05120f915, type: 2}
+  - {fileID: 2100000, guid: 4073971d1657b441b8a9c3b738abbb93, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -7943,7 +7943,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: e1378683995fc4f76aa95f374ccbe5b1, type: 3}
   m_Controller: {fileID: 9100000, guid: 03b99f90b1b544ca2a476add8e1ea2d4, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 

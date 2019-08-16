@@ -75,7 +75,7 @@ public class TrainScript : MonoBehaviour
                         }
 
                    
-                     //   Time.timeScale = 1;
+                     Time.timeScale = 1;
 
                     }
 

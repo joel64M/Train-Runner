@@ -73,7 +73,7 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         // isGameStart = true;
-    //  LoadLevel();
+      LoadLevel();
     }
 
     void LoadLevel()
@@ -116,7 +116,7 @@ public class GameManagerScript : MonoBehaviour
         isGameOver = false;
         isGameComplete = false;
         InvokeRepeating("SortStats", 2, 0.1f);
-      //  Time.timeScale = 5;
+      Time.timeScale = 9;
     }
     public void GameOver()
     {
@@ -133,7 +133,6 @@ public class GameManagerScript : MonoBehaviour
      //   isGameStart = false;
         isGameOver = true;
         isGameComplete = false;
-        print("Game Over");
         UIManagerScript.instance.ShowDeathUI();
         Handheld.Vibrate();
     }

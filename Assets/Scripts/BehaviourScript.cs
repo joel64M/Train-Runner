@@ -68,9 +68,9 @@ public class BehaviourScript : MonoBehaviour
         pf.speed = 0;
     }
     bool isStart;
-
     private void Update()
     {
+      
         if (gms.isPlayerGameStart)
         {
             if (!isStart)
@@ -119,7 +119,7 @@ public class BehaviourScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Death"))
+        if (collision.gameObject.CompareTag("Death") || collision.gameObject.CompareTag("Death2") || collision.gameObject.CompareTag("Death3"))
         {
 
             if (hit)

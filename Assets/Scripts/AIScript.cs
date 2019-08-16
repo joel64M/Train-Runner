@@ -40,22 +40,24 @@ public class AIScript : MonoBehaviour
         }
     }
 
-    void Sleep()
+    void Sleep(float f)
     {
         pf.speed = gms.trainNormalSpeed;
         bs.characterAnim.SetBool("Sleep", true);
         if (raceFinished)
         {
-            Invoke("StandUp", 3f);
+            Invoke("StandUp", 3.2f);
         }
         else
         {
-            Invoke("StandUp",2f);
+            f = Random.Range(f-0.2f, f+0.5f);
+            Invoke("StandUp",f);
         }
 
     }
     void StandUp()
     {
+   
         pf.speed = speed;
         if (raceFinished)
         {
@@ -72,9 +74,24 @@ public class AIScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(enabled)
         if (other.CompareTag("Death"))
         {
-            Sleep();
+
+
+            Sleep(1.1f);
+        }
+        if (other.CompareTag("Death2"))
+        {
+            Sleep(4);
+        }
+
+        if (other.CompareTag("Death3"))
+        {
+
+
+            Sleep(2);
+
         }
     }
 
